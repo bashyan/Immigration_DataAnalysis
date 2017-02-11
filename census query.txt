@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Immigration Data and Statistics
 
 
@@ -131,3 +132,138 @@ conclusion
 8. immigrant salary wanted to be increased? compare median income, exclude naturalized
 9. is immigration ban required? compare median income of native and immigrant, taxable income but not filed//
 
+=======
+Immigration Data and Statistics
+
+
+tax, poverty - java
+1. which country contribute more to US?consider income and tax filed// pig
+2. which country people educated well(degree and above)?exclude USA
+
+3. which age group has more immigrants?// hive
+4. which educated group has more immigrants?//
+
+5. wheather certain country immigrants need to be stopped?low income, no tax file, less educated
+
+6. immigrant child care needed more?orphan, poverty// pig
+7. senior citizen care needed more? age above 65 and poverty
+
+8. immigrant salary wanted to be increased? compare median income, exclude naturalized
+9. is immigration ban required? compare median income of native and immigrant, taxable income but not filed// 
+
+"immigrant"refer to persons with no U.S. citizenship at birth. This 
+population includes naturalized citizens, lawful permanent 
+residents, refugees and asylees, persons on certain temporary 
+visas, and the unauthorized.
+
+single - $9275
+married filing joinntly or widow - $18550
+married filing seperately - $9275
+head of house - $13250
+
+Relative poverty measures are used as official poverty rates by the European 
+Union, UNICEF and the OEDC. The main poverty line used in the OECD and the 
+European Union is based on "economic distance", a level of income set at 60% 
+of the median household income
+
+Median income
+From Wikipedia, the free encyclopedia
+
+Median income is the amount that divides the income distribution into two equal groups, half having income above that amount, and half having income below that amount. Mean income (average) is the amount obtained by dividing the total aggregate income of a group by the number of units in that group.
+
+Median income can be calculated by household income, by personal income, or for specific demographic groups.
+
+
+
+
+Sample Data 
+-------------------
+{"Age": 73,"Education": " High school graduate","MaritalStatus": " Widowed","Gender": " Female",
+"TaxFilerStatus": " Nonfiler","Income":  1700.09,"Parents": " Not in universe","CountryOfBirth": " United-States",
+"Citizenship": " Native- Born in the United States","WeeksWorked":  0}
+
+" Native- Born in  the United States"
+" Native- Born abroad of American Parent(s)"
+" Native- Born in Puerto Rico or U S Outlying"
+" Foreign born- Not a citizen of US"
+" Foreign born- U S Citizen by naturalization"
+
+
+
+Immigrant Shares
+------------------
+what % of population is immigrant
+
+what % of population is US citizen by birth
+
+category of immigrant hold what % in total immigrant and also in total population? 
+
+top sourcing countries?
+
+% of top sourced countries of total population and also total immigrant 
+
+Demographic and Educational Characteristics
+---------------------------------------------
+What is the gender composition of the U.S. immigrant population?
+
+country with elderly immigrant?
+
+What is the age distribution of the immigrant population?
+What is median age of immigrants and US citizens, and who is older?
+Age and Sex Distribution of the U.S. Immigrant and Native-Born Populations
+
+What % immigrants are naturalized U.S. citizens, and also list other categories % of total immigrants?
+
+What percentage of the adult foreign-born population is college educated of the total immigrant, also list % lack in high school degree, compare with native-born?
+Top Ten Countries of Origin of College-Educated Immigrants?
+Immigrant and native Share (%) in Education?
+
+median income of total population, native and immigrant?
+who's median income is more?
+who with 50 week work earns more (degree and above)?
+who's family earns more?(foreign or native)
+
+total married, % of native and immigrant?
+
+immigrant orphan children %?
+
+% immigrant in poverty
+
+
+which age group immigrant is in poverty?
+
+% immigrant pensioner with social security benefit? age 65 and above, income 1260 per quarter or naturalized
+
+
+Tax Payer Characteristics
+-----------------------------
+total tax payers? % of natives pay tax, % of immigrants pay tax, compare?
+which educated group pay more tax?
+who contribute more in tax to country, native or immigrant?
+
+who earns the highest, and his details?
+
+Naturalization Characteristics
+--------------------------------
+What % immigrants are naturalized citizens?
+What are the countries of origin have high share in naturalized citizens?
+
+------------------------------------
+conclusion
+------------------------------------
+
+1. which country contribute more to US?consider income and tax filed//
+2. which country people educated well(degree and above)?exclude USA
+
+3. which age group has more immigrants?//
+4. which educated group has more immigrants?//
+
+5. wheather certain country immigrants need to be stopped?low income, no tax file, less educated
+
+6. immigrant child care needed more?orphan, poverty//
+7. senior citizen care needed more? age above 65 and poverty
+
+8. immigrant salary wanted to be increased? compare median income, exclude naturalized
+9. is immigration ban required? compare median income of native and immigrant, taxable income but not filed//
+
+>>>>>>> origin/master
