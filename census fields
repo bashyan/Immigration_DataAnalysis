@@ -1,0 +1,226 @@
+Sample Data
+------------------
+{"Age": 73,"Education": " High school graduate","MaritalStatus": " Widowed","Gender": " Female","TaxFilerStatus": " Nonfiler","Income":  1700.09,"Parents": " Not in universe","CountryOfBirth": " United-States","Citizenship": " Native- Born in the United States","WeeksWorked":  0}
+
+
+Fields
+------------------
+Age
+Education
+MaritalStatus
+Gender
+Female
+TaxFilerStatus
+Income
+Parents
+CountryOfBirth
+Citizenship
+WeeksWorked
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+Hive Commands
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+create database immigration;
+use immigration;
+
+hive (immigration)> add jar file:///usr/local/hive/hcatalog/share/hcatalog/hive-hcatalog-core-1.2.1.jar;
+Added [file:///usr/local/hive/hcatalog/share/hcatalog/hive-hcatalog-core-1.2.1.jar] to class path
+Added resources: [file:///usr/local/hive/hcatalog/share/hcatalog/hive-hcatalog-core-1.2.1.jar]
+
+hive (immigration)> create external table census (Age int, Education string, MaritalStatus string, Gender string, TaxFilerStatus string, Income double, Parents string, CountryofBirth string, Citizenship string, WeeksWorked int) row format serde 'org.apache.hive.hcatalog.data.JsonSerDe';
+OK
+Time taken: 2.162 seconds
+
+
+hive (immigration)> describe census;
+OK
+col_name	data_type	comment
+age                 	int                 	from deserializer   
+education           	string              	from deserializer   
+maritalstatus       	string              	from deserializer   
+gender              	string              	from deserializer   
+taxfilerstatus      	string              	from deserializer   
+income              	double              	from deserializer   
+parents             	string              	from deserializer   
+countryofbirth      	string              	from deserializer   
+citizenship         	string              	from deserializer   
+weeksworked         	int                 	from deserializer   
+Time taken: 0.192 seconds, Fetched: 10 row(s)
+
+
+hive (immigration)> load data local inpath '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/sample' overwrite into table census;
+
+
+hive (immigration)> select * from census limit 1;
+OK
+census.age	census.education	census.maritalstatus	census.gender	census.taxfilerstatus	census.income	census.parents	census.countryofbirth	census.citizenship	census.weeksworked
+73	 High school graduate	 Widowed	 Female	 Nonfiler	1700.09	 Not in universe	 United-States	 Native- Born in the United States	0
+Time taken: 0.16 seconds, Fetched: 1 row(s)
+
+
+
+
+hive (immigration)> select count(*) from census;
+Query ID = hduser_20170207220032_67044aae-acb9-4560-8bde-f237d892762b
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+java.io.FileNotFoundException: File does not exist: hdfs://localhost:54310/usr/local/hive/lib
+	at org.apache.hadoop.hdfs.DistributedFileSystem$18.doCall(DistributedFileSystem.java:1122)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$18.doCall(DistributedFileSystem.java:1114)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java:1114)
+	at org.apache.hadoop.mapreduce.filecache.ClientDistributedCacheManager.getFileStatus(ClientDistributedCacheManager.java:288)
+	at org.apache.hadoop.mapreduce.filecache.ClientDistributedCacheManager.getFileStatus(ClientDistributedCacheManager.java:224)
+	at org.apache.hadoop.mapreduce.filecache.ClientDistributedCacheManager.determineTimestamps(ClientDistributedCacheManager.java:99)
+	at org.apache.hadoop.mapreduce.filecache.ClientDistributedCacheManager.determineTimestampsAndCacheVisibilities(ClientDistributedCacheManager.java:57)
+	at org.apache.hadoop.mapreduce.JobSubmitter.copyAndConfigureFiles(JobSubmitter.java:269)
+	at org.apache.hadoop.mapreduce.JobSubmitter.copyAndConfigureFiles(JobSubmitter.java:390)
+	at org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(JobSubmitter.java:483)
+	at org.apache.hadoop.mapreduce.Job$10.run(Job.java:1296)
+	at org.apache.hadoop.mapreduce.Job$10.run(Job.java:1293)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1628)
+	at org.apache.hadoop.mapreduce.Job.submit(Job.java:1293)
+	at org.apache.hadoop.mapred.JobClient$1.run(JobClient.java:562)
+	at org.apache.hadoop.mapred.JobClient$1.run(JobClient.java:557)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1628)
+	at org.apache.hadoop.mapred.JobClient.submitJobInternal(JobClient.java:557)
+	at org.apache.hadoop.mapred.JobClient.submitJob(JobClient.java:548)
+	at org.apache.hadoop.hive.ql.exec.mr.ExecDriver.execute(ExecDriver.java:431)
+	at org.apache.hadoop.hive.ql.exec.mr.MapRedTask.execute(MapRedTask.java:137)
+	at org.apache.hadoop.hive.ql.exec.Task.executeTask(Task.java:160)
+	at org.apache.hadoop.hive.ql.exec.TaskRunner.runSequential(TaskRunner.java:88)
+	at org.apache.hadoop.hive.ql.Driver.launchTask(Driver.java:1653)
+	at org.apache.hadoop.hive.ql.Driver.execute(Driver.java:1412)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1195)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1059)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1049)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:213)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:165)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:736)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:681)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:621)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+Job Submission failed with exception 'java.io.FileNotFoundException(File does not exist: hdfs://localhost:54310/usr/local/hive/lib)'
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask
+
+
+
+hive (immigration)> add jar hdfs://localhost:54310/hivejar/hive-hcatalog-core-1.2.1.jar;
+converting to local hdfs://localhost:54310/hivejar/hive-hcatalog-core-1.2.1.jar
+Added [/usr/local/hive/iotmp/hive-hcatalog-core-1.2.1.jar] to class path
+Added resources: [hdfs://localhost:54310/hivejar/hive-hcatalog-core-1.2.1.jar]
+hive (immigration)> select count(*) from census;
+Query ID = hduser_20170207221037_cb463223-0c00-42bb-bc41-6d9f60447025
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486482785014_0006, Tracking URL = http://localhost:8088/proxy/application_1486482785014_0006/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486482785014_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-02-07 22:11:01,579 Stage-1 map = 0%,  reduce = 0%
+2017-02-07 22:11:24,102 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.02 sec
+2017-02-07 22:11:45,473 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 5.6 sec
+MapReduce Total cumulative CPU time: 5 seconds 600 msec
+Ended Job = job_1486482785014_0006
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 5.6 sec   HDFS Read: 606264 HDFS Write: 5 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 600 msec
+OK
+_c0
+2000
+Time taken: 71.417 seconds, Fetched: 1 row(s)
+
+
+hive (immigration)> select sum(income) from census;
+_c0
+3456523.2700000033
+Time taken: 36.435 seconds, Fetched: 1 row(s)
+
+
+hive (immigration)> select income from census order by income desc limit 1000;
+1609.76
+Time taken: 40.51 seconds, Fetched: 1000 row(s)
+
+hive (immigration)> select percentile(cast(income as BIGINT),0.5) from census;
+hive (immigration)> select percentile_approx(income,0.5) from census;
+https://issues.apache.org/jira/browse/HIVE-1387 
+When the number of unique values in a column is very large (as one might expect with double), then percentile() will run out of memory and crash.
+
+
+hive (immigration)> create table age(age int, agegroup string) row format delimited
+                  > fields terminated by '\t';
+
+
+hive (immigration)> select count(*) from age;
+_c0
+101
+
+hive (immigration)> select b.agegroup, count(a.Citizenship), a.Citizenship from census a, age b where a.age=b.age group by a.Citizenship, b.agegroup order by a.Citizenship asc;
+
+b.agegroup	_c1	a.citizenship
+adult		77	 Foreign born- Not a citizen of U S 
+elderly		1	 Foreign born- Not a citizen of U S 
+Teenager	5	 Foreign born- Not a citizen of U S 
+infants		11	 Foreign born- Not a citizen of U S 
+middle-aged	35	 Foreign born- Not a citizen of U S 
+senior citizen	6	 Foreign born- Not a citizen of U S 
+adult		22	 Foreign born- U S citizen by naturalization
+elderly		3	 Foreign born- U S citizen by naturalization
+middle-aged	25	 Foreign born- U S citizen by naturalization
+senior citizen	14	 Foreign born- U S citizen by naturalization
+infants		3	 Native- Born abroad of American Parent(s)
+senior citizen	1	 Native- Born abroad of American Parent(s)
+middle-aged	5	 Native- Born abroad of American Parent(s)
+adult		8	 Native- Born abroad of American Parent(s)
+Teenager	3	 Native- Born abroad of American Parent(s)
+adult		3	 Native- Born in Puerto Rico or U S Outlying
+infants		1	 Native- Born in Puerto Rico or U S Outlying
+middle-aged	5	 Native- Born in Puerto Rico or U S Outlying
+senior citizen	3	 Native- Born in Puerto Rico or U S Outlying
+Teenager	130	 Native- Born in the United States
+adult		613	 Native- Born in the United States
+elderly		30	 Native- Born in the United States
+infants		382	 Native- Born in the United States
+middle-aged	408	 Native- Born in the United States
+senior citizen	206	 Native- Born in the United States
+Time taken: 63.887 seconds, Fetched: 25 row(s)
+
+select b.agegroup, count(a.Citizenship) from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship=" Foreign born- U S citizen by naturalization") group by a.Citizenship, b.agegroup;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

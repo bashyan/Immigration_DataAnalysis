@@ -1,0 +1,9 @@
+
+Load JSON File
+----------------------
+loadjson = load '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/sample' using JsonLoader(Age: int,Education,MaritalStatus,Gender,
+TaxFilerStatus,Income: double,Parents,CountryOfBirth,Citizenship,WeeksWorked: int);
+
+Convert to CSV
+----------------------
+store loadjson into '/immigrantProject/Censusdata/' using org.apache.pig.piggybank.storage.CSVExcelStorage();
