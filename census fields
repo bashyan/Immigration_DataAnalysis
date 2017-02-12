@@ -209,17 +209,232 @@ middle-aged	408	 Native- Born in the United States
 senior citizen	206	 Native- Born in the United States
 Time taken: 63.887 seconds, Fetched: 25 row(s)
 
-select b.agegroup, count(a.Citizenship) from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship=" Foreign born- U S citizen by naturalization") group by a.Citizenship, b.agegroup;
+
+hive (immigration)> select distinct(Citizenship) from census;
+citizenship
+" Foreign born- Not a citizen of U S " 
+" Foreign born- U S citizen by naturalization"
+" Native- Born abroad of American Parent(s)"
+" Native- Born in Puerto Rico or U S Outlying"
+" Native- Born in the United States"
+
+hive (immigration)> select count(a.Citizenship) as total_immigrant from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship= " Foreign born- U S citizen by naturalization");
+total immigrant
+199
+
+hive (immigration)> select b.agegroup, count(a.Citizenship) from census a, age b where a.age=b.age and a.Citizenship=" Foreign born- Not a citizen of U S " group by b.agegroup;
+
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 2  Reduce: 1   Cumulative CPU: 20.16 sec   HDFS Read: 615778 HDFS Write: 262 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 3.3 sec   HDFS Read: 5175 HDFS Write: 73 SUCCESS
+Total MapReduce CPU Time Spent: 23 seconds 460 msec
+OK
+b.agegroup	_c1
+Teenager	5
+adult		77
+elderly		1
+infants		11
+middle-aged	35
+senior citizen	6
+
+hive (immigration)> select b.agegroup, count(a.Citizenship) from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship= " Foreign born- U S citizen by naturalization") group by b.agegroup;
+b.agegroup	_c1
+Teenager	5
+adult		99
+elderly		4
+infants		11
+middle-aged	60
+senior citizen	20
 
 
+hive (immigration)> select b.agegroup, count(a.Citizenship) from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship= " Foreign born- U S citizen by naturalization") group by b.agegroup;
+
+Query ID = hduser_20170211230759_0597fbcb-e0ba-41f0-b9ce-a1e4f0f6d357
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486833876712_0005, Tracking URL = http://localhost:8088/proxy/application_1486833876712_0005/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486833876712_0005
+Hadoop job information for Stage-1: number of mappers: 2; number of reducers: 1
+2017-02-11 23:08:06,723 Stage-1 map = 0%,  reduce = 0%
+2017-02-11 23:08:22,660 Stage-1 map = 50%,  reduce = 0%, Cumulative CPU 10.6 sec
+2017-02-11 23:08:23,727 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 11.12 sec
+2017-02-11 23:08:31,190 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 14.57 sec
+MapReduce Total cumulative CPU time: 14 seconds 570 msec
+Ended Job = job_1486833876712_0005
+Launching Job 2 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486833876712_0006, Tracking URL = http://localhost:8088/proxy/application_1486833876712_0006/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486833876712_0006
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2017-02-11 23:08:44,734 Stage-2 map = 0%,  reduce = 0%
+2017-02-11 23:08:51,170 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.37 sec
+2017-02-11 23:08:58,583 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 3.49 sec
+MapReduce Total cumulative CPU time: 3 seconds 490 msec
+Ended Job = job_1486833876712_0006
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 2  Reduce: 1   Cumulative CPU: 14.57 sec   HDFS Read: 617108 HDFS Write: 262 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 3.49 sec   HDFS Read: 5175 HDFS Write: 74 SUCCESS
+Total MapReduce CPU Time Spent: 18 seconds 60 msec
+OK
+b.agegroup	_c1
+Teenager	5
+adult		99
+elderly		4
+infants		11
+middle-aged	60
+senior citizen	20
+Time taken: 60.494 seconds, Fetched: 6 row(s)
 
 
+select b.agegroup, max(total_immigrant) from census a, age b where a.age=b.age and total_immigrant in (select count(a.Citizenship) as total_immigrant from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship= " Foreign born- U S citizen by naturalization")) group by b.agegroup;
 
 
+select b.agegroup, max(total_immigrant) from census a, age b where a.age=b.age and total_immigrant = (select count(Citizenship) as total_immigrant from census where (Citizenship=" Foreign born- Not a citizen of U S " or Citizenship= " Foreign born- U S citizen by naturalization")) group by b.agegroup;
 
 
+add jar hdfs://localhost:54310/hivejar/hive-hcatalog-core-1.2.1.jar;
+
+hive (immigration)> select b.agegroup, count(a.Citizenship) as total_immigrants from census a, age b where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or a.Citizenship= " Foreign born- U S citizen by naturalization") group by b.agegroup order by total_immigrants desc;
+
+Query ID = hduser_20170212112201_9ee90db2-b4d6-41d6-854d-feb9e1f96153
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486878498701_0003, Tracking URL = http://localhost:8088/proxy/application_1486878498701_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486878498701_0003
+Hadoop job information for Stage-1: number of mappers: 2; number of reducers: 1
+2017-02-12 11:22:09,629 Stage-1 map = 0%,  reduce = 0%
+2017-02-12 11:22:20,584 Stage-1 map = 50%,  reduce = 0%, Cumulative CPU 2.87 sec
+2017-02-12 11:22:21,653 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 6.61 sec
+2017-02-12 11:22:29,117 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 9.85 sec
+MapReduce Total cumulative CPU time: 9 seconds 850 msec
+Ended Job = job_1486878498701_0003
+Launching Job 2 out of 3
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486878498701_0004, Tracking URL = http://localhost:8088/proxy/application_1486878498701_0004/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486878498701_0004
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2017-02-12 11:22:42,102 Stage-2 map = 0%,  reduce = 0%
+2017-02-12 11:22:48,508 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.43 sec
+2017-02-12 11:22:55,960 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 3.14 sec
+MapReduce Total cumulative CPU time: 3 seconds 140 msec
+Ended Job = job_1486878498701_0004
+Launching Job 3 out of 3
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486878498701_0005, Tracking URL = http://localhost:8088/proxy/application_1486878498701_0005/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486878498701_0005
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 1
+2017-02-12 11:23:08,078 Stage-3 map = 0%,  reduce = 0%
+2017-02-12 11:23:14,471 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 1.26 sec
+2017-02-12 11:23:21,983 Stage-3 map = 100%,  reduce = 100%, Cumulative CPU 3.03 sec
+MapReduce Total cumulative CPU time: 3 seconds 30 msec
+Ended Job = job_1486878498701_0005
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 2  Reduce: 1   Cumulative CPU: 9.85 sec   HDFS Read: 617108 HDFS Write: 262 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 3.14 sec   HDFS Read: 4613 HDFS Write: 262 SUCCESS
+Stage-Stage-3: Map: 1  Reduce: 1   Cumulative CPU: 3.03 sec   HDFS Read: 4884 HDFS Write: 74 SUCCESS
+Total MapReduce CPU Time Spent: 16 seconds 20 msec
+OK
+b.agegroup	total_immigrants
+adult		99
+middle-aged	60
+senior citizen	20
+infants		11
+Teenager	5
+elderly		4
+Time taken: 81.622 seconds, Fetched: 6 row(s)
 
 
+hive (immigration)> select education, count(citizenship) as total_immigrants from census where (citizenship=" Foreign born- Not a citizen of U S " or citizenship= " Foreign born- U S citizen by naturalization") group by education order by total_immigrants desc;
+Query ID = hduser_20170212112927_2637d580-f34d-4321-8c22-1bc9a61130b6
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486878498701_0006, Tracking URL = http://localhost:8088/proxy/application_1486878498701_0006/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486878498701_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2017-02-12 11:29:38,990 Stage-1 map = 0%,  reduce = 0%
+2017-02-12 11:29:45,835 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.83 sec
+2017-02-12 11:29:53,613 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.86 sec
+MapReduce Total cumulative CPU time: 4 seconds 860 msec
+Ended Job = job_1486878498701_0006
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1486878498701_0007, Tracking URL = http://localhost:8088/proxy/application_1486878498701_0007/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1486878498701_0007
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2017-02-12 11:30:06,990 Stage-2 map = 0%,  reduce = 0%
+2017-02-12 11:30:13,440 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.63 sec
+2017-02-12 11:30:19,873 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 3.68 sec
+MapReduce Total cumulative CPU time: 3 seconds 680 msec
+Ended Job = job_1486878498701_0007
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.86 sec   HDFS Read: 606569 HDFS Write: 812 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 3.68 sec   HDFS Read: 5406 HDFS Write: 451 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 540 msec
+OK
+education				total_immigrants
+ High school graduate			54
+ Some college but no degree		25
+ Bachelors degree(BA AB BS)		23
+ 7th and 8th grade			11
+ Children				11
+ 5th or 6th grade			10
+ 9th grade				10
+ 10th grade				8
+ Associates degree-academic program	8
+ 1st 2nd 3rd or 4th grade		8
+ Less than 1st grade			7
+ Associates degree-occup /vocational	6
+ 11th grade				6
+ Masters degree(MA MS MEng MEd MSW MBA)	4
+ Prof school degree (MD DDS DVM LLB JD)	4
+ 12th grade no diploma			2
+ Doctorate degree(PhD EdD)		2
+Time taken: 54.837 seconds, Fetched: 17 row(s)
 
 
 
