@@ -44,11 +44,28 @@ joinbags = cogroup total by total, immigrants by immigrants, totalpoverty by tot
 --con = foreach joibag generate CONCAT(total.total, immigrants.immigrants, totalpoverty.tot_poverty, immipovcount.immigrant_poverty);
 bagcon = foreach joinbags generate BagConcat(total,immigrants,totalpoverty,immipovcount);
 
-re = foreach bagcon generate total.total, immigrants.immigrants, (total.total - immigrants.immigrants), totalpoverty.tot_poverty,  immipovcount.immigrant_poverty, (totalpoverty.tot_poverty - immipovcount.immigrant_poverty);
-dump re;
---dump con;
+re = foreach bagcon generate total.total, immigrants.immigrants, (total.total - immigrants.immigrants) as natives, totalpoverty.tot_poverty,  immipovcount.immigrant_poverty, (totalpoverty.tot_poverty - immipovcount.immigrant_poverty) as native_poverty;
 
+relim = limit re 1;---------(2000,199,1801,402,48,354)------------
 
+percentage = foreach relim generate total, natives, 
+(((double)natives*100)/(double)total) as native_per,immigrants, 
+(((double)immigrants*100)/(double)total) as immi_per, tot_poverty, 
+(((double)tot_poverty*100)/(double)total) as poverty_per, native_poverty, 
+ROUND_TO((((double)native_poverty*100)/(double)natives),2) as nativepov_per, 
+ROUND_TO((((double)native_poverty*100)/(double)tot_poverty),2) as nativetotpov_per, immigrant_poverty, 
+ROUND_TO((((double)immigrant_poverty*100)/(double)immigrants),2) as immipoverty_per, 
+ROUND_TO((((double)immigrant_poverty*100)/(double)tot_poverty),2) as immitotpov_per;---------(2000,1801,90.05,199,9.95,402,20.1,354,19.66,88.06,48,24.12,11.94)---------
+
+dump percentage;
+--TOTAL POP   2000
+--NATIVES POP 1801 [90.05%]
+--IMMIGRANTS  199  [09.95%]
+--TOT POVERTY 402  [20.10%]
+--NATIVE POV  354  [19.66%] among Natives
+--NATIVE POV  354  [88.06%] among Total Poverty
+--IMMIG POV   48   [24.12%] among Immigrants
+--IMMIG POV   48   [11.94%] among Total Poverty
 
 
 
