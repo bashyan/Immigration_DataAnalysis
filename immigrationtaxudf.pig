@@ -1,7 +1,9 @@
 register '/home/bashyan-ubuntu/Documents/censusproject/datafu-1.2.0.jar';
 
 define Median datafu.pig.stats.Median();
+
 define BagConcat datafu.pig.bags.BagConcat();
+
 census = load '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/part-m-00000' using PigStorage(',') as (Age: int,Education:chararray,MaritalStatus:chararray,Gender:chararray,TaxFilerStatus:chararray,Income:double,Parents:chararray,
 CountryOfBirth:chararray, Citizenship:chararray, WeeksWorked: int);
 
@@ -25,26 +27,27 @@ poverty = filter ordercensus by (Income<(medianincome.Median*0.60));
 
 totalpoverty = foreach (group poverty all) generate COUNT(poverty) as tot_poverty;  ------402-------
 
-            -- POVERTY IMMIGRANT--
+
+                                                    -- POVERTY IMMIGRANT--
+
+
 immipov = filter poverty by (Citizenship == ' Foreign born- Not a citizen of U S ') OR (Citizenship == ' Foreign born- U S citizen by naturalization');
 
 immipovcount = foreach (group immipov all) generate COUNT(immipov) as immigrant_poverty;  -----48--------
 
---nativepov = cogroup totalpoverty by tot_poverty, immipovcount by immigrant_poverty;
+immichild = filter immipov by (Agegroup == 'infants');
 
---nativecount = foreach nativepov generate $0;
+childpov = foreach (group immichild all) generate COUNT(immichild) as childpov;  -----------4----------- 
 
---natcount = foreach nativecount generate (totalpoverty.tot_poverty - immipovcount.immigrant_poverty); 
+immiold = filter immipov by (Agegroup == 'senior citizen') or (Agegroup == 'elderly');
 
---nativepoverty = limit natcount 1; --------*354*----------
+oldpov = foreach (group immiold all) generate COUNT(immiold) as oldpov;   ----------6-----------
 
-joinbags = cogroup total by total, immigrants by immigrants, totalpoverty by tot_poverty, immipovcount by immigrant_poverty;
---describe joinbags;
---joibag = foreach joinbags generate $0;
---con = foreach joibag generate CONCAT(total.total, immigrants.immigrants, totalpoverty.tot_poverty, immipovcount.immigrant_poverty);
+joinbags = cogroup total by total, immigrants by immigrants, totalpoverty by tot_poverty, immipovcount by immigrant_poverty; 
+
 bagcon = foreach joinbags generate BagConcat(total,immigrants,totalpoverty,immipovcount);
 
-re = foreach bagcon generate total.total, immigrants.immigrants, (total.total - immigrants.immigrants) as natives, totalpoverty.tot_poverty,  immipovcount.immigrant_poverty, (totalpoverty.tot_poverty - immipovcount.immigrant_poverty) as native_poverty;
+re = foreach bagcon generate total.total, immigrants.immigrants, (total.total - immigrants.immigrants) as natives, totalpoverty.tot_poverty,  immipovcount.immigrant_poverty, (totalpoverty.tot_poverty - immipovcount.immigrant_poverty) as native_poverty, childpov.childpov, oldpov.oldpov;
 
 relim = limit re 1;---------(2000,199,1801,402,48,354)------------
 
@@ -55,8 +58,10 @@ percentage = foreach relim generate total, natives,
 ROUND_TO((((double)native_poverty*100)/(double)natives),2) as nativepov_per, 
 ROUND_TO((((double)native_poverty*100)/(double)tot_poverty),2) as nativetotpov_per, immigrant_poverty, 
 ROUND_TO((((double)immigrant_poverty*100)/(double)immigrants),2) as immipoverty_per, 
-ROUND_TO((((double)immigrant_poverty*100)/(double)tot_poverty),2) as immitotpov_per;---------(2000,1801,90.05,199,9.95,402,20.1,354,19.66,88.06,48,24.12,11.94)---------
-
+ROUND_TO((((double)immigrant_poverty*100)/(double)tot_poverty),2) as immitotpov_per,
+ROUND_TO((((double)childpov*100)/(double)immigrants),2) as immichildpov_per,
+ROUND_TO((((double)oldpov*100)/(double)immigrants),2) as immioldpov_per;
+---------(2000,1801,90.05,199,9.95,402,20.1,354,19.66,88.06,48,24.12,11.94,2.01,3.02)-----------
 dump percentage;
 --TOTAL POP   2000
 --NATIVES POP 1801 [90.05%]
@@ -64,8 +69,12 @@ dump percentage;
 --TOT POVERTY 402  [20.10%]
 --NATIVE POV  354  [19.66%] among Natives
 --NATIVE POV  354  [88.06%] among Total Poverty
+--INFANT POV  4    [02.01%] among Immigrants
+--OLDAGE POV  6    [03.02%] among Immigrants
 --IMMIG POV   48   [24.12%] among Immigrants
 --IMMIG POV   48   [11.94%] among Total Poverty
+
+
 
 
 
