@@ -167,6 +167,7 @@ public class tax
 	{
 		
 		Configuration conf = new Configuration();
+		conf.set("mapred.textoutputformat.separator", ",");
 		Job job = Job.getInstance(conf);
 	    job.setJarByClass(tax.class);
 	    job.setJobName("Tax Calculation");
