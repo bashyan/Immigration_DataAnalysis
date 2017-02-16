@@ -12,20 +12,12 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 
-
-
-//73, High school graduate, Widowed, Female, Nonfiler,1700.09, Not in universe, 
-//United-States, Native- Born in the United States,0
-
-//in cluster, many datanode process the data in mapper and then sends to reducer, so mapper can't do avg func
-
 public class momap 
 {
 	
 	public static class taxMapper extends Mapper<LongWritable, Text, LongWritable, Text> 
-	{
-		
-		
+	{	
+	
 		public void map(LongWritable key, Text value, Context context)throws IOException, InterruptedException 
 		{
 			String[] line = value.toString().split(",");
@@ -168,9 +160,7 @@ public class momap
 				if(citizen.contains(" Native"))
 				{
 					context.write(new LongWritable(2), new Text("NativeTax\t"+taxcal+","+filer));
-				}
-				
-				
+				}				
 			}		
 		}		
 	}
@@ -193,17 +183,15 @@ public class momap
 			if(citizen.contains(" Native"))
 			{
 				context.write(new LongWritable(5), new Text("NativeIncome\t"+incval));
-			}
-				
-			
-		}
-			
-			
+			}			
+		}			
 	}
 	
 	/*
-	--------total tax, immigrant tax, native tax
-	--------total mean, immigrant mean, native mean*/
+	-----total tax, immigrant tax, native tax
+	-----total mean, immigrant mean, native mean
+	-----in cluster, many datanode process in individual mapper and then sends mapper result to reducer, avg func not feasible in mapper
+	*/
 	
 	public static class banReducer extends Reducer<LongWritable, Text, LongWritable, Text> 
 	{
@@ -300,54 +288,27 @@ public class momap
 			{
 				context.write(new LongWritable(8), new Text(" Native's Mean Income:\t  $ "+meansnat));
 			}
-			/*context.write(new LongWritable(1), new Text("Total Tax: "+taxall));
-			context.write(new LongWritable(2), new Text("Total Native Tax: "+nativetax));
-			context.write(new LongWritable(3), new Text("Total Immigrant Tax: "+foreigntax));
-			context.write(new LongWritable(4), new Text("Native Nonfiled Tax: "+taxnonpaynative));
-			context.write(new LongWritable(5), new Text("Immigrant Nonfiled Tax: "+taxnonpayforeign));
-			context.write(new LongWritable(6), new Text("US Mean Income: "+meanall));
-			context.write(new LongWritable(7), new Text("Native's Mean Income: "+meannat));
-			context.write(new LongWritable(8), new Text("Immigrant's Mean Income: "+meanfor));*/
+			
 		}
 	}
 	
-	/*
-	 * Total Tax : 4001038.80
-	 * Total Native Tax : 3595133.41
-	 * Total Immigrant Tax : 405905.39
-	 * Native Nonfiled Tax : 657909
-	 * Immigrant Nonfiled Tax : 87723.19
-	 * US Mean Income : 20739.13
-	 * Native's Mean Income : 21011.97
-	 * Immigrant's Mean Income : 18269.86
-	 * 
-	 * 
-	 * 1,Total Tax: 4001038.80
-	3,Total Immigrant Tax: 405905.39
-	5,Immigrant Nonfiled Tax: 87723.19
-	2,Total Native Tax: 3595133.41
-	4,Native Nonfiled Tax: 657909.09
-	6,US Mean Income: 20739.13
-	8,Immigrant's Mean Income: 18269.86
-	7,Native's Mean Income: 21011.97
-	 */
+	
 	
 	public static void main(String[] args) throws Exception 
 	{		
 		Configuration conf = new Configuration();
 		conf.set("mapred.textoutputformat.separator", ",");
 		Job job = Job.getInstance(conf);
-	    job.setJarByClass(momap.class);
-	    job.setJobName("Immigrant Ban");
+	    	job.setJarByClass(momap.class);
+	    	job.setJobName("Immigrant Ban");
 		job.setReducerClass(banReducer.class);
-	    //job.setNumReduceTasks(0);
 		job.setOutputKeyClass(LongWritable.class);
 		job.setOutputValueClass(Text.class);
 		
 		MultipleInputs.addInputPath(job, new Path(args[0]),TextInputFormat.class, taxMapper.class);
 		MultipleInputs.addInputPath(job, new Path(args[1]),TextInputFormat.class, medianMapper.class);
 		
-	    FileOutputFormat.setOutputPath(job, new Path(args[2]));
-	    System.exit(job.waitForCompletion(true) ? 0 : 1);		
+	    	FileOutputFormat.setOutputPath(job, new Path(args[2]));
+	    	System.exit(job.waitForCompletion(true) ? 0 : 1);		
 	}	
 }
