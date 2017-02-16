@@ -63,17 +63,12 @@ ROUND_TO((((double)childpov*100)/(double)immigrants),2) as immichildpov_per,
 ROUND_TO((((double)oldpov*100)/(double)immigrants),2) as immioldpov_per;
 ---------(2000,1801,90.05,199,9.95,402,20.1,354,19.66,88.06,48,24.12,11.94,2.01,3.02)-----------
 dump percentage;
---TOTAL POP   2000
---NATIVES POP 1801 [90.05%]
---IMMIGRANTS  199  [09.95%]
---TOT POVERTY 402  [20.10%]
---NATIVE POV  354  [19.66%] among Natives
---NATIVE POV  354  [88.06%] among Total Poverty
+--TOTAL POP   2000 ------------TOT POVERTY 402  [20.10%]
+--NATIVES POP 1801 [90.05%]----NATIVE POV  354  [19.66%] among Natives-------NATIVE POV  354  [88.06%] among Total Poverty
+--IMMIGRANTS  199  [09.95%]----IMMIG POV   48   [24.12%] among Immigrants----IMMIG POV   48   [11.94%] among Total Poverty
+
 --INFANT POV  4    [02.01%] among Immigrants
 --OLDAGE POV  6    [03.02%] among Immigrants
---IMMIG POV   48   [24.12%] among Immigrants
---IMMIG POV   48   [11.94%] among Total Poverty
-
 
 
 

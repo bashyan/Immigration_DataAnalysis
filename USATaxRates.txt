@@ -1,0 +1,57 @@
+IRS Tax Brackets & Deduction Amounts for Tax Year 2016
+https://www.irs.com/articles/2016-federal-tax-rates-personal-exemptions-and-standard-deductions 
+
+Single
+Taxable Income 		Tax Rate
+$0—$9,275 		10%
+$9,276—$37,650 		$927.50 plus 15% of the amount over $9,275
+$37,651—$91,150 	$5,183.75 plus 25% of the amount over $37,650
+$91,151—$190,150 	$18,558.75 plus 28% of the amount over $91,150
+$190,151—$ 413,350 	$46,278.75 plus 33% of the amount over $190,150
+$413,351—$415,050 	$119,934.75 plus 35% of the amount over $413,350
+$415,051 or more 	$120,529.75 plus 39.6% of the amount over $415,050
+
+ 
+Married Filing Jointly or Qualifying Widow(er)
+Taxable Income 		Tax Rate
+$0—$18,550 		10%
+$18,551—$75,300 	$1,855 plus 15% of the amount over $18,550
+$75,301—$151,900 	$10,367.50 plus 25% of the amount over $75,300
+$151,901—$231,450 	$29,517.50 plus 28% of the amount over $151,900
+$231,451—$413,350 	$51,791.50 plus 33% of the amount over $231,450
+$413,351—$466,950 	$111,818.50 plus 35% of the amount over $413,350
+$466,951 or more 	$130,578.50 plus 39.6% of the amount over $466,950
+
+ 
+Married Filing Separately
+Taxable Income 		Tax Rate
+$0—$9,275 		10%
+$9,276—$37,650 		$927.50 plus 15% of the amount over $9,275
+$37,651—$75,950 	$5,183.75 plus 25% of the amount over $37,650
+$75,951—$115,725 	$14,758.75 plus 28% of the amount over $75,950
+$115,726—$206,675 	$25,895.75 plus 33% of the amount over $115,725
+$206,676—$233,475 	$55,909.25 plus 35% of the amount over $206,675
+$233,476 or more 	$65,289.25 plus 39.6% of the amount over $233,475
+
+ 
+Head of Household
+Taxable Income 		Tax Rate
+$0—$13,250 		10%
+$13,251—$50,400 	$1,325 plus 15% of the amount over $13,250
+$50,401—$130,150 	$6,897.50 plus 25% of the amount over $50,400
+$130,151—$210,800 	$26,835 plus 28% of the amount over $130,150
+$210,801—$413,350 	$49,417 plus 33% of the amount over $210,800
+$413,351—$441,000 	$116,258.50 plus 35% of the amount over $413,350
+$441,001 or more 	$125,936 plus 39.6% of the amount over $441,000
+
+
+
+
+
+
+
+
+
+
+
+

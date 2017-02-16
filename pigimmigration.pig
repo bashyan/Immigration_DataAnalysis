@@ -8,7 +8,7 @@
 
 --store loadjson into '/home/hduser/Documents/censusmapoutput' using org.apache.pig.piggybank.storage.CSVExcelStorage();
 
-census = load '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/part-m-00000' using PigStorage(',') as (Age: int,Education:chararray,MaritalStatus:chararray,Gender:chararray,TaxFilerStatus:chararray,Income:double,Parents:chararray,
+census = load '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/samplecsv' using PigStorage(',') as (Age: int,Education:chararray,MaritalStatus:chararray,Gender:chararray,TaxFilerStatus:chararray,Income:double,Parents:chararray,
 CountryOfBirth:chararray, Citizenship:chararray, WeeksWorked: int);
 
 age = load '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/agegroup' using PigStorage('\t') as (Age: int, Agegroup:chararray);
@@ -36,10 +36,6 @@ showcountry = foreach groupcountry generate $0, COUNT(immigrants.$8);
 ordercountry = order showcountry by $1 desc;
 
 filtercountry = filter ordercountry by ($0 != ' ?');
-
-
-
-
 
 dump filtercountry;
 

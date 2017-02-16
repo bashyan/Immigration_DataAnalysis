@@ -21,10 +21,7 @@ population includes naturalized citizens, lawful permanent
 residents, refugees and asylees, persons on certain temporary 
 visas, and the unauthorized.
 
-single - $9275
-married filing joinntly or widow - $18550
-married filing seperately - $9275
-head of house - $13250
+
 
 Relative poverty measures are used as official poverty rates by the European 
 Union, UNICEF and the OEDC. The main poverty line used in the OECD and the 
