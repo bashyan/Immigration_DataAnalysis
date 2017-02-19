@@ -1,0 +1,57 @@
+
+create database immigration;
+use immigration;
+
+hive (immigration)> create external table census (Age int, Education string, MaritalStatus string, Gender string, 
+	            >TaxFilerStatus string, Income double, Parents string, CountryofBirth string, Citizenship string, WeeksWorked int) 
+	            >row format serde 'org.apache.hive.hcatalog.data.JsonSerDe';
+
+hive (immigration)> load data local inpath '/home/bashyan-ubuntu/Documents/censusproject/Censusdata/sample' 
+	            >overwrite into table census;
+
+hive (immigration)> create table age(age int, agegroup string) row format delimited
+                 	            > fields terminated by '\t';
+
+hive(immigration)>select count(Citizenship) as total_immigrants from census where Citizenship=" Foreign born- Not a citizen of U S " or 
+	            >Citizenship= " Foreign born- U S citizen by naturalization
+
+hive (immigration)> select b.agegroup as age_group, ((count(a.Citizenship)*100)/tot_im) as immigrants from 
+	            >(select count(Citizenship) as tot_im from census where Citizenship=" Foreign born- Not a citizen of U S " or 
+	            >Citizenship= " Foreign born- U S citizen by naturalization) census a, age b 
+	            >where a.age=b.age and (a.Citizenship=" Foreign born- Not a citizen of U S " or 
+	            >a.Citizenship= " Foreign born- U S citizen by naturalization") 
+	            >group by b.agegroup order by total_immigrants desc;
+
+age_group	              immigrants
+adult		99
+middle-aged	60
+senior citizen	20
+infants		11
+Teenager		5
+elderly		4
+
+hive (immigration)> select education, count(citizenship) as total_immigrants from census 
+	            >where (citizenship=" Foreign born- Not a citizen of U S " or citizenship= " Foreign born- U S citizen by naturalization") 
+	            >group by education order by total_immigrants desc;
+
+
+education				       total_immigrants
+ High school graduate				54
+ Some college but no degree			25
+ Bachelors degree(BA AB BS)			23
+ 7th and 8th grade				11
+ Children					11
+ 5th or 6th grade				10
+ 9th grade					10
+ 10th grade					8
+ Associates degree-academic program		8
+ 1st 2nd 3rd or 4th grade			8
+ Less than 1st grade				7
+ Associates degree-occup /vocational		6
+ 11th grade					6
+ Masters degree(MA MS MEng MEd MSW MBA)	4
+ Prof school degree (MD DDS DVM LLB JD)		4
+ 12th grade no diploma			2
+ Doctorate degree(PhD EdD)			2
+
+
